@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Dashboard
+        </title>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="../static/add_deck.css">
+    </head>
+    <body>
+        <header style="margin: 0;">
+            <nav class ="navbar">
+                <ul class="nav_ul">
+                    <li class="nav_item"><a class="nav_item_a" href="/dashboard">Home</a></li>
+                    <li class="nav_item"><a class="nav_item_a" href="/decks">Decks</a></li>
+                    <li class="nav_item"><a class="nav_item_a" href="/quiz">Quiz</a></li>
+                    <li class = "nav_item_logout"><button class="logout_button" onclick="window.location.href='/logout'" type="submit">Logout</button></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <div class = "dashboard_content">
+        <h5 style="margin-left: 10px;" >Wlcome {{ user }} !</h5>
+        <h2 style="margin-left: 10px;margin-bottom: 0px;" >Add deck</h2>
+        <hr>
+        <form action="/deckapi/add" method="post">
+            <label for="name">Deck Name</label>
+            <label for="for">Deck Description</label>
+            <input type="text" name="name" required>
+            <input type="text" name="description" required>
+            <input type="submit" name="submit" value="Add">
+
+
+        </form>
+        </div>
+        
+        
+    </body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Dashboard
+        </title>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="../static/delete_card.css">
+    </head>
+    <body>
+        <header style="margin: 0;">
+            <nav class ="navbar">
+                <ul class="nav_ul">
+                    <li class="nav_item"><a class="nav_item_a" href="/dashboard">Home</a></li>
+                    <li class="nav_item"><a class="nav_item_a" href="/decks">Decks</a></li>
+                    <li class="nav_item"><a class="nav_item_a" href="/quiz">Quiz</a></li>
+                    <li class = "nav_item_logout"><button class="logout_button" onclick="window.location.href='/logout'" type="submit">Logout</button></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <div class = "dashboard_content">
+        <h5 style="margin-left: 10px;" >Wlcome {{ user }} !</h5>
+        <h2 style="margin-left: 10px;margin-bottom: 0px;" >Dashboard</h2>
+        <hr>
+        </div>
+        
+        
+    </body>
+</html>

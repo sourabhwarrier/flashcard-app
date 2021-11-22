@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Sign Up
+        </title>
+        <meta charset="utf-8"/>
+    </head>
+    <body>
+        <h1>Sign Up</h1>
+        <form action="/signup" method="post">
+            <label for="">{{ message }}</label><br>
+            <label for="username">username</label>
+            <input type="text" name = "username" required>
+            <br>
+            <label for="password">password</label>
+            <input type="password" name = "password" required minlength="8">
+            <input type="submit" value="Sign Up">
+        </form>
+        <button onclick ="window.location.href='signin'" type="submit">Sign In</button>
+    </body>
+</html>

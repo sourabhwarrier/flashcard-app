@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Dashboard
+        </title>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="../static/decks.css">
+    </head>
+    <body>
+        <header style="margin: 0;">
+            <nav class ="navbar">
+                <ul class="nav_ul">
+                    <li class="nav_item"><a class="nav_item_a" href="/dashboard">Home</a></li>
+                    <li class="nav_item"><a class="nav_item_a" href="/decks">Decks</a></li>
+                    <li class="nav_item"><a class="nav_item_a" href="/quiz">Quiz</a></li>
+                    <li class = "nav_item_logout"><button class="logout_button" onclick="window.location.href='/logout'" type="submit">Logout</button></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <div class = "decks_content">
+        <h2 style="margin-left: 10px;margin-bottom: 0px;" >Decks</h2>
+        <button class="general_button" onclick="window.location.href='/deck/add'">Add deck</button>
+        <button class="general_button" onclick="window.location.href='/deck/delete'">Delete</button>
+        <button class="general_button">Import</button>
+        <hr>
+        <div class ="decks_display">
+        {% for deck in decks %}
+            <div class="deck" onclick="window.location.href='/deck/{{ deck[0] }}'">
+                <div class="container">
+                <h4 style="max-width: 150px;margin-left: auto;margin-right: auto;"><b>{{ deck[1] }}</b></h4>
+                <p>{{ deck[2] }}</p>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        </div>
+        
+        
+    </body>
+</html>
