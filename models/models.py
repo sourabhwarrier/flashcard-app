@@ -20,3 +20,18 @@ class Deck(db.Model):
     name = Column(db.String,nullable=False)
     description = Column(db.String,nullable=False)
 
+class Performance(db.Model):
+    __tablename__ = "performances"
+    performance_id = Column(db.Integer,primary_key=True,autoincrement=True)
+    user_id = Column(db.Integer, db.ForeignKey("users.user_id"),nullable=False)
+    card_id = Column(db.Integer, db.ForeignKey("cards.card_id"),nullable=False)
+    deck_id = Column(db.Integer, db.ForeignKey("decks.deck_id"),nullable=False)
+    score = Column(db.Integer,nullable=False)
+class Result(db.Model):
+    __tablename__ = "results"
+    result_id = Column(db.Integer,primary_key=True,autoincrement=True)
+    user_id = Column(db.Integer, db.ForeignKey("users.user_id"),nullable=False)
+    card_id = Column(db.Integer, db.ForeignKey("cards.card_id"),nullable=False)
+    answer = Column(db.String,nullable=False)
+    submission = Column(db.String,nullable=False)
+    score = Column(db.Integer,nullable=False)

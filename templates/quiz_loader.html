@@ -2,10 +2,10 @@
 <html>
     <head>
         <title>
-            Dashboard
+            Quiz
         </title>
         <meta charset="utf-8"/>
-        <link rel="stylesheet" href="../static/delete_card.css">
+        <link rel="stylesheet" href="../static/decks.css">
     </head>
     <body>
         <header style="margin: 0;">
@@ -19,10 +19,20 @@
             </nav>
         </header>
         
-        <div class = "dashboard_content">
-        <h5 style="margin-left: 10px;" >Welcome {{ user }} !</h5>
-        <h2 style="margin-left: 10px;margin-bottom: 0px;" >Dashboard</h2>
+        <div class = "decks_content">
+        <h2 style="margin-left: 10px;margin-bottom: 0px;" >Quiz Options</h2>
+        <h4 style="margin-left: 10px;margin-bottom: 0px;" >Select a deck for the quiz</h4>
         <hr>
+        <div class ="decks_display">
+        {% for deck in decks %}
+            <div class="deck" onclick="window.location.href='/quiz/{{ deck[0] }}/0'">
+                <div class="container">
+                <h4 style="max-width: 150px;margin-left: auto;margin-right: auto;"><b>{{ deck[1] }}</b></h4>
+                <p>{{ deck[2] }}</p>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
         </div>
         
         
