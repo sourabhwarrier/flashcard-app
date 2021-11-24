@@ -108,13 +108,16 @@ def option_gen(cards):
     return data
 
 def get_result(user_id):
-    score = sum([x[5] for x in db.session.query(Result).filter(Result.user_id==user_id,Result.score==1).all()])
-    n = len(db.session.query(Result).filter(Result.user_id==user_id).all())
-    points = (score/n)*100
-    wrong_cards = db.session.query(Result).filter(Result.user_id==user_id,Result.score==0).all()
-    db.session.close()
-    return points
-
+    try:
+        score = sum([int(x.score) for x in db.session.query(Result).filter(Result.user_id==user_id,Result.score==1).all()])
+        n = len(db.session.query(Result).filter(Result.user_id==user_id).all())
+        print(n)
+        points = (score/n)*100
+        wrong_cards = [x.card_id for x in db.session.query(Result).filter(Result.user_id==user_id,Result.score==0).all()]
+        db.session.close()
+        return points,wrong_cards
+    except:
+        return None,None
 def update_performance(user_id,card_id,deck_id,score):
     new_performance = Performance(user_id=user_id,card_id=card_id,deck_id=deck_id,score=score)
     db.session.add(new_performance)
@@ -131,3 +134,14 @@ def reset_result():
     db.session.query(Result).delete()
     db.session.commit()
     db.session.close()
+
+def get_performance(user_id):
+    decks_studied = list(set([(x.deck_id,x.name,x.description) for x in db.session.query(Performance).filter(Performance.user_id==user_id).all()]))
+    averages = []
+    points = []
+
+    for deck in decks_studied:
+        point = sum([int(x.score) for x in db.session.query(Performance).filter(Performance.user_id==user_id,Performance.deck_id==deck[0]).all()])
+        attempts = len([x for x in db.session.query(Performance).filter(Performance.user_id==user_id,Performance.deck_id==deck[0]).all()])
+        averages.append(round((point/attempts)*100),2)
+        points.append(point)

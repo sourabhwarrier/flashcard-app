@@ -6,7 +6,7 @@ import os
 from sqlalchemy import databases
 from api.api import CardAddAPI, CardDelAPI,DeckAddAPI,DeckUpdateAPI,DeckDelAPI, QuizApi
 from application.configuration import appConfig
-from controllers.functions import add_user, get_decks, get_user_id, option_gen, user_exists,authenticate_user,get_cards,get_deck
+from controllers.functions import add_user, get_decks,get_card, get_user_id, option_gen, reset_result, user_exists,authenticate_user,get_cards,get_deck,get_result
 from db.database import db
 
 def create_app():
@@ -69,8 +69,24 @@ def signup():
 
 @app.route('/dashboard',methods = ['GET','POST'])
 def dashboard():
+    reset_result()
     if g.user:
         return render_template("dashboard.html",user=session['user'])
+    return redirect(url_for('signin'))
+
+@app.route('/results',methods = ['GET','POST'])
+def results():
+    global visited
+    visited = []
+    if g.user:
+        points,wrong_cards = get_result(get_user_id(session["user"]))
+        if points !=None and wrong_cards != None:
+            cards = [get_card(x) for x in wrong_cards]
+            perfect = "No reviews recommended for now. You got a perfect score!"
+            print(cards)
+            if cards != []:
+                perfect = ""
+            return render_template("results.html",points=points,cards=cards,perfect = perfect)
     return redirect(url_for('signin'))
 
 @app.route('/logout')
@@ -90,23 +106,36 @@ def decks():
 
 @app.route('/quiz_loader',methods = ['GET','POST'])
 def quiz_loader():
+    global visited
+    visited = []
+    reset_result()
     if g.user:
         if get_decks() == None:
             return render_template("decks.html")
         return render_template("quiz_loader.html",decks = get_decks())
     return redirect(url_for('signin'))
+#global data
+visited = []
 data = None
 @app.route('/quiz/<int:deck_id>/<int:current>',methods = ['GET','POST'])
 def quiz(deck_id,current):
+    print("selected deck = ",deck_id)
     global data
+    global visited
     if g.user:
         if get_cards(deck_id) == None:
             return render_template("decks.html")
+        if data != option_gen(get_cards(deck_id)):
+            data = None
         if data == None:
             data = option_gen(get_cards(deck_id))
         n = len(data)-1
         user_id = get_user_id(session["user"])
-        return render_template("quiz.html",data = data,current = int(current),size = n,deck_id=deck_id,user_id=user_id)
+        if current not in visited:
+            visited.append(current)
+            return render_template("quiz.html",data = data,current = int(current),size = n,deck_id=deck_id,user_id=user_id)
+        else:
+            reset_result()
     return redirect(url_for('signin'))
 
 @app.route('/deck/<int:deck_id>',methods = ['GET','POST'])
@@ -114,7 +143,7 @@ def deck(deck_id):
     if g.user:
         if get_cards(deck_id) == None:
             return render_template("cards.html")
-        return render_template("cards.html",deck = get_deck(deck_id),cards = get_cards(deck_id))
+        return render_template("cards.html",deck = get_deck(deck_id),cards = get_cards(deck_id), size = len(get_cards(deck_id)))
     return redirect(url_for('signin'))
 
 @app.route('/<int:deck_id>/add_card',methods = ['GET','POST'])

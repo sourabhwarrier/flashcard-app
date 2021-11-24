@@ -1,10 +1,10 @@
 
 from flask.templating import render_template
 from flask_restful import Resource
-from flask import request
+from flask import request,url_for
 from werkzeug.utils import redirect
 
-from controllers.functions import add_card,delete_card,add_deck, delete_deck, get_card, get_cards, get_result, reset_result,update_deck, update_result
+from controllers.functions import add_card,delete_card,add_deck, delete_deck, get_card, get_cards, get_result, reset_result,update_deck, update_performance, update_result
 
 class CardAddAPI(Resource):
     def get(self):
@@ -93,10 +93,14 @@ class QuizApi(Resource):
     def put(self):
         pass
     def post(self):
+        submission = None
         user_id=request.form["user_id"]
         card_id = request.form["card_id"]
         current = request.form["current"]
-        submission = request.form["option"]
+        try:
+            submission = request.form["option"]
+        except:
+            submission = "-1111111111"
         deck_id=request.form["deck_id"]
         size = request.form["size"]
         answer = get_card(card_id)[2]
@@ -105,12 +109,13 @@ class QuizApi(Resource):
         else:
             score = 0
         update_result(user_id=user_id,card_id=card_id,answer=answer,submission=submission,score=score)
+        update_performance(user_id=user_id,card_id=card_id,score=score)
         if int(current)<int(size):
             return redirect('/quiz/{}/{}'.format(deck_id,str(int(current)+1)))
         else:
-            points = get_result(user_id)
-            reset_result()
-            return render_template("results.html",data = points)
+            points,wrong_cards = get_result(user_id)
+            #reset_result()
+            return redirect(url_for('results'))
 
     def delete(self):
         pass

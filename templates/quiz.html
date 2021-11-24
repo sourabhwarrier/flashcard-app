@@ -6,6 +6,16 @@
         </title>
         <meta charset="utf-8"/>
         <link rel="stylesheet" href="/static/quiz.css">
+        <script>
+            function showans(){
+                var ans = document.getElementById("ans");
+                var b = document.getElementById("me");
+                var option = document.getElementById("radios");
+                ans.style.visibility = "visible";
+                b.style.display = "none";
+                option.style.display = "none";
+            }
+        </script>
     </head>
     <body>
         <header style="margin: 0;">
@@ -28,8 +38,9 @@
             <div class="card">
                 <div class="container">
                 <h4 style="font-size: 25px;max-width: 150px;margin-left: auto;margin-right: auto;"><b>{{ data[current][0][1] }}</b></h4>
-                <p>{{ data[current][0][2] }}</p>
-                </div>
+                <p id="ans" style="visibility: hidden;">{{ data[current][0][2] }}</p>
+                <button id="me" onclick="showans();">Show Answer</button>
+            </div>
                 
             </div>
         </div>
@@ -40,12 +51,14 @@
                 <input type="hidden" name = "size" value={{size}}>
                 <input type="hidden" name = "deck_id" value={{deck_id}}>
                 <input type="hidden" name = "user_id" value={{user_id}}>
+                <div id="radios" style="display: block;">
                 {% for option in data[current][1] %}
                 <div style="padding: 5px;">
                 <input type="radio" name="option" value={{option}}><label>{{option}}</label>
                 </div>
                 <br>
                 {% endfor %}
+                </div>
                 <input type="submit" value="Next" style="padding: 5px; margin: 10px; text-align: right;">
             </form>
         </div>

@@ -5,7 +5,7 @@
             Dashboard
         </title>
         <meta charset="utf-8"/>
-        <link rel="stylesheet" href="../static/cards.css">
+        <link rel="stylesheet" href="../static/results.css">
     </head>
     <body>
         <header style="margin: 0;">
@@ -20,12 +20,15 @@
         </header>
         
         <div class = "dashboard_content">
-        <h2 style="margin-left: 10px;margin-bottom: 0px;" >{{ deck[1] }} ({{ size }} cards)</h2>
-        <button class="general_button" onclick="window.location.href='/{{ deck[0] }}/add_card'">Add card</button>
-        <button class="general_button" onclick="window.location.href='/{{ deck[0] }}/delete_card'">Delete card</button>
-        <button class="general_button" onclick="window.location.href='/{{ deck[0] }}/edit_deck'">Edit deck</button>
+        <h2 style="margin-left: 10px;margin-bottom: 0px;" >Results</h2>
         <hr>
+        <div style="text-align: center;">
+        <h3>Well done!</h3>
+        <h4>You scored {{ points }}%</h4>
         </div>
+        <h2 style="margin-left: 10px;margin-bottom: 0px;" >Rcommended reviews</h2>
+        <hr>
+        <h3 style="text-align: center;">{{ status }}</h3>
         <div class ="cards_display">
             {% for card in cards %}
                 <div class="card">
@@ -35,6 +38,8 @@
                     </div>
                 </div>
             {% endfor %}
+            <h4 style="color: green;">{{ perfect }}</h4>
+        </div>
         </div>
         
         
