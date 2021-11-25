@@ -6,7 +6,7 @@ import os
 from sqlalchemy import databases
 from api.api import CardAddAPI, CardDelAPI,DeckAddAPI,DeckUpdateAPI,DeckDelAPI, QuizApi
 from application.configuration import appConfig
-from controllers.functions import add_user, get_decks,get_card, get_user_id, option_gen, reset_result, user_exists,authenticate_user,get_cards,get_deck,get_result
+from controllers.functions import add_user, get_decks,get_card, get_performance, get_user_id, option_gen, reset_result, user_exists,authenticate_user,get_cards,get_deck,get_result
 from db.database import db
 
 def create_app():
@@ -71,8 +71,14 @@ def signup():
 def dashboard():
     reset_result()
     if g.user:
-        return render_template("dashboard.html",user=session['user'])
+        decks_studied,averages,points,times = get_performance(get_user_id(session['user']))
+        return render_template("dashboard.html",user=session['user'],decks = decks_studied,averages=averages,points=points,times=times,size = len(points))
     return redirect(url_for('signin'))
+
+
+
+
+
 
 @app.route('/results',methods = ['GET','POST'])
 def results():

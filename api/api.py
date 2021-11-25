@@ -2,9 +2,11 @@
 from flask.templating import render_template
 from flask_restful import Resource
 from flask import request,url_for
+from sqlalchemy.sql.expression import update
 from werkzeug.utils import redirect
+from datetime import datetime
 
-from controllers.functions import add_card,delete_card,add_deck, delete_deck, get_card, get_cards, get_result, reset_result,update_deck, update_performance, update_result
+from controllers.functions import add_card, add_misc,delete_card,add_deck, delete_deck, get_card, get_cards, get_misc, get_result, reset_result,update_deck, update_misc, update_performance, update_result
 
 class CardAddAPI(Resource):
     def get(self):
@@ -109,11 +111,19 @@ class QuizApi(Resource):
         else:
             score = 0
         update_result(user_id=user_id,card_id=card_id,answer=answer,submission=submission,score=score)
-        update_performance(user_id=user_id,card_id=card_id,score=score)
+        update_performance(user_id=user_id,card_id=card_id,deck_id=deck_id,score=score)
+        
         if int(current)<int(size):
             return redirect('/quiz/{}/{}'.format(deck_id,str(int(current)+1)))
         else:
-            points,wrong_cards = get_result(user_id)
+            new_time = datetime.now().strftime("%b %d %Y %H:%M:%S")
+            check = get_misc(user_id,deck_id)
+            if check == []:
+                add_misc(user_id,deck_id,new_time)
+            else:
+                update_misc(user_id,deck_id,new_time)
+            print("value of check ************ is : {}".format(check))
+            #points,wrong_cards = get_result(user_id)
             #reset_result()
             return redirect(url_for('results'))
 

@@ -35,3 +35,11 @@ class Result(db.Model):
     answer = Column(db.String,nullable=False)
     submission = Column(db.String,nullable=False)
     score = Column(db.Integer,nullable=False)
+
+class Misc(db.Model):
+    __tablename__ = "misc"
+    misc_id = Column(db.Integer,primary_key=True,autoincrement=True)
+    user_id = Column(db.Integer, db.ForeignKey("users.user_id"),nullable=False)
+    deck_id = Column(db.Integer, db.ForeignKey("decks.deck_id"),nullable=False)
+    last_time = Column(db.String,nullable=False)
+

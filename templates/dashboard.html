@@ -5,7 +5,7 @@
             Dashboard
         </title>
         <meta charset="utf-8"/>
-        <link rel="stylesheet" href="../static/delete_card.css">
+        <link rel="stylesheet" href="../static/dashboard.css">
     </head>
     <body>
         <header style="margin: 0;">
@@ -23,7 +23,23 @@
         <h5 style="margin-left: 10px;" >Welcome {{ user }} !</h5>
         <h2 style="margin-left: 10px;margin-bottom: 0px;" >Dashboard</h2>
         <hr>
-        </div>
+        <div class = "decks_content">
+            
+            <div class ="decks_display">
+                <h5>Recently studied decks</h5>
+            {% for i in range(size) %}
+                <div class="deck" onclick="window.location.href='/deck/{{ decks[i][0] }}'">
+                    <div class="container">
+                    <h4 style="max-width: 150px;margin-left: auto;margin-right: auto;"><b>{{ decks[i][1] }}</b></h4>
+                    <p>{{ decks[i][2] }}</p>
+                    <p>Total points : {{ points[i] }}</p>
+                    <p>Average score : {{ averages[i] }}</p>
+                    <p>Last studied on {{ times[i][0] }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+            </div>
         
         
     </body>

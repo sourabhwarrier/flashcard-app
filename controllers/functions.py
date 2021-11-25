@@ -1,5 +1,6 @@
+from operator import add
 from db.database import db
-from models.models import Performance, User,Card,Deck,Result
+from models.models import Misc, Performance, User,Card,Deck,Result
 from sqlalchemy import *
 import hashlib
 import random
@@ -51,6 +52,7 @@ def add_card(question,answer,deck_id):
     db.session.commit()
 
 def delete_card(card_id):
+    delete_performance_by_card(card_id)
     db.session.query(Card).filter(Card.card_id==card_id).delete()
     db.session.commit()
     db.session.close()
@@ -75,6 +77,8 @@ def update_deck(deck_id,name,description):
     db.session.commit()
 
 def delete_deck(deck_id):
+    delete_misc_by_deck(deck_id)
+    delete_performance_by_deck(deck_id)
     db.session.query(Deck).filter(Deck.deck_id==deck_id).delete()
     db.session.commit()
     db.session.close()
@@ -102,7 +106,7 @@ def option_gen(cards):
             idx = random.randint(0,n-1)
             print(idx)
             if W[idx] not in options and W[idx]:
-                options.append(W[idx])
+                options.append(W[idx].capitalize())
         random.shuffle(options)
         data.append((card,options))
     return data
@@ -136,12 +140,46 @@ def reset_result():
     db.session.close()
 
 def get_performance(user_id):
-    decks_studied = list(set([(x.deck_id,x.name,x.description) for x in db.session.query(Performance).filter(Performance.user_id==user_id).all()]))
+    deck_ids = list(set([(x.deck_id) for x in db.session.query(Performance).filter(Performance.user_id==user_id).all()]))
+    print(deck_ids)
+    decks_studied = [[(x.deck_id,x.name,x.description) for x in db.session.query(Deck).filter(Deck.deck_id==t)] for t in deck_ids]
+    print(decks_studied)
+    if decks_studied != []:
+        decks_studied = [x[0] for x in decks_studied]
     averages = []
     points = []
-
+    times = []
     for deck in decks_studied:
         point = sum([int(x.score) for x in db.session.query(Performance).filter(Performance.user_id==user_id,Performance.deck_id==deck[0]).all()])
         attempts = len([x for x in db.session.query(Performance).filter(Performance.user_id==user_id,Performance.deck_id==deck[0]).all()])
-        averages.append(round((point/attempts)*100),2)
+        averages.append(round((point/attempts)*100,2))
         points.append(point)
+        times.append(get_misc(user_id,deck[0]))
+    #return [],[],[],[]
+    return decks_studied,averages,points,times
+def delete_performance_by_card(card_id):
+    db.session.query(Performance).filter(Performance.card_id==card_id).delete()
+    db.session.commit()
+    db.session.close()
+def delete_performance_by_deck(deck_id):
+    db.session.query(Performance).filter(Performance.deck_id==deck_id).delete()
+    db.session.commit()
+    db.session.close()
+
+def add_misc(user_id,deck_id,time):
+    new_misc = Misc(user_id=user_id,deck_id=deck_id,last_time=time)
+    db.session.add(new_misc)
+    db.session.commit()
+
+def update_misc(user_id,deck_id,time):
+    db.session.query(Misc).filter(Misc.deck_id==deck_id,Misc.user_id==user_id).update({"user_id":user_id,"deck_id":deck_id,"last_time":time})
+    db.session.commit()
+
+def delete_misc_by_deck(deck_id):
+    db.session.query(Misc).filter(Misc.deck_id==deck_id).delete()
+    db.session.commit()
+    db.session.close()
+
+def get_misc(user_id,deck_id):
+    time = [x.last_time for x in db.session.query(Misc).filter(Misc.deck_id==deck_id,Misc.user_id==user_id).all()]
+    return time
