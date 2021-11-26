@@ -23,7 +23,7 @@
         <h2 style="margin-left: 10px;margin-bottom: 0px;" >Quiz Options</h2>
         <h4 style="margin-left: 10px;margin-bottom: 0px;" >Select a deck for the quiz</h4>
         <hr>
-        <div class ="decks_display">
+        <div style="margin-top: 10px;" class ="decks_display">
         {% for deck in decks %}
             <div class="deck" onclick="window.location.href='/quiz/{{ deck[0] }}/0'">
                 <div class="container">

@@ -1,0 +1,25 @@
+body{
+    background-color: darkcyan;
+}
+
+.centered_content{
+    margin-top: 0px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.entry{
+    margin-top: 10px;
+    width: 150px;
+    padding: 10px 30px 10px 30px;
+}
+
+.entry{
+    margin-top: 10px;
+    width: 150px;
+    padding: 10px 30px 10px 30px;
+}

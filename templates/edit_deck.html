@@ -20,19 +20,27 @@
         </header>
         
         <div class = "dashboard_content">
-        <h5 style="margin-left: 10px;" >Wlcome {{ user }} !</h5>
+        <h5 style="margin-left: 10px;" ></h5>
         <h2 style="margin-left: 10px;margin-bottom: 0px;" >Edit deck <span style="color: #5596e6;">{{ deck[1] }}</span></h2>
         <hr>
+        <div class="edit_deck_block">
         <form action="/deckapi/update" method="post">
             <input type="hidden" name="deck_id" value = {{ deck[0] }}>
-            <label for="name">Deck Name</label>
-            <label for="for">Deck Description</label>
-            <input type="text" name="name" value= {{deck[1]}} required>
-            <input type="text" name="description" value = {{deck[2]}} required>
-            <input type="submit" name="submit" value="Update">
-
+            <div class="line">
+            <label class="gn_label1" for="name">Deck Name</label>
+            <input class="gn_input" type="text" name="name" value= "{{deck[1]}}" required>
+        </div>
+        <br>
+        <div class="line">
+            <label class="gn_label2" for="for">Deck Description</label>
+            
+            <input class="gn_input" type="text" name="description" value = "{{deck[2]}}" required>
+        </div>
+        <br>
+            <input class="entry" type="submit" name="submit" value="Update">
 
         </form>
+    </div>
         </div>
         
         

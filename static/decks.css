@@ -81,6 +81,14 @@ body{
   }
 
 .decks_display{
+    margin-top: 0px;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    -ms-transform: translate(-50%, -0%);
+    transform: translate(-50%, -0%);
+    text-align: center;
+
     padding: 10px;
 }
 

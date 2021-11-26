@@ -34,6 +34,7 @@
         <hr>
         <h2 style="margin-left: 10px;margin-bottom: 0px;" >{{ current+1 }}/{{ size+1 }}</h2>
         </div>
+        <div class="quiz_body">
         <div class ="cards_display">
             <div class="card">
                 <div class="container">
@@ -54,13 +55,14 @@
                 <div id="radios" style="display: block;">
                 {% for option in data[current][1] %}
                 <div style="padding: 5px;">
-                <input type="radio" name="option" value={{option}}><label>{{option}}</label>
+                <input style = "width: 20px;height: 20px;"type="radio" name="option" value="{{option}}"><label>{{option}}</label>
                 </div>
                 <br>
                 {% endfor %}
                 </div>
                 <input type="submit" value="Next" style="padding: 5px; margin: 10px; text-align: right;">
             </form>
+        </div>
         </div>
         
     </body>

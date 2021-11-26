@@ -58,45 +58,51 @@ body{
     background-color: firebrick;
 }
 
+.card {
+    /* Add shadows to create the "card" effect */
+    width: 400px;
+    height: 200px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+  }
+  
+  /* On mouse-over, add a deeper shadow */
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+  
+  /* Add some padding inside the card container */
+  .container {
+    text-align: center;
+    padding: 2px 16px;
+  }
+
+.cards_display{
+    padding: 10px;
+}
+
+
+.general_button{
+    width: 100px;
+    height: 30px;
+    margin: 10px;
+    padding: 5;
+    background-color: #5596e6;
+}
+
+.contents{
+    margin-top: 0px;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    -ms-transform: translate(-50%, -0%);
+    transform: translate(-50%, -0%);
+    text-align: center;
+}
 
 .entry{
     
-    margin-top: 10px;
+  
     width: 100px;
     padding: 10px 30px 10px 30px;
-    float: right;
-}
-
-.gn_label1{
-    padding-left: 0px;
-    padding-right: 18px;
-}
-.gn_label2{
-    padding-left: 0px;
-    padding-right: 26px;
-}
-
-.line{
-    margin:0px;
-    padding-top: 1px;
-}
-
-.gn_input{
-    border-radius: 5px;
-    border-style: groove;
-    border-color:darkcyan;
-    height: 20px;
-}
-
-.add_card_block{
-    
-    height:auto;
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    text-align: left;
-   
 }

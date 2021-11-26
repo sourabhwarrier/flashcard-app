@@ -25,7 +25,7 @@
         <hr>
         <div class = "decks_content">
             
-            <div class ="decks_display">
+            <div style="margin-top: 10px;" class ="decks_display">
                 <h5>Recently studied decks</h5>
             {% for i in range(size) %}
                 <div class="deck" onclick="window.location.href='/deck/{{ decks[i][0] }}'">
@@ -35,6 +35,8 @@
                     <p>Total points : {{ points[i] }}</p>
                     <p>Average score : {{ averages[i] }}</p>
                     <p>Last studied on {{ times[i][0] }}</p>
+                    <p>Rating : {{ ratings[i] }}</p>
+                    <img src="data:image/png;base64, {{ images[i] }}" style="height: 550px; width: 550px;">
                     </div>
                 </div>
             {% endfor %}

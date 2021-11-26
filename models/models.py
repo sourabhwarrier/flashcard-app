@@ -1,4 +1,5 @@
-from sqlalchemy.sql.schema import Column
+from sqlalchemy.sql.expression import null
+from sqlalchemy.sql.schema import Column, ForeignKey
 from db.database import db
 
 class User(db.Model):
@@ -19,6 +20,12 @@ class Deck(db.Model):
     deck_id = Column(db.Integer,primary_key=True,autoincrement=True)
     name = Column(db.String,nullable=False)
     description = Column(db.String,nullable=False)
+
+class Rating(db.Model):
+    __tablename__ = "ratings"
+    rating_id = Column(db.Integer,primary_key=True,autoincrement=True)
+    deck_id = Column(db.String,db.ForeignKey("decks.deck_id"),nullable=False)
+    rating = Column(db.String,nullable=False)
 
 class Performance(db.Model):
     __tablename__ = "performances"

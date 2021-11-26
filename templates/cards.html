@@ -26,7 +26,8 @@
         <button class="general_button" onclick="window.location.href='/{{ deck[0] }}/edit_deck'">Edit deck</button>
         <hr>
         </div>
-        <div class ="cards_display">
+        <div class="contents">
+        <div style="margin-top: 10px;" class ="cards_display">
             {% for card in cards %}
                 <div class="card">
                     <div class="container">
@@ -35,6 +36,7 @@
                     </div>
                 </div>
             {% endfor %}
+        </div>
         </div>
         
         

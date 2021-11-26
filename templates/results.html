@@ -23,11 +23,12 @@
         <h2 style="margin-left: 10px;margin-bottom: 0px;" >Results</h2>
         <hr>
         <div style="text-align: center;">
-        <h3>Well done!</h3>
+        <h3>{{ message }} !</h3>
         <h4>You scored {{ points }}%</h4>
         </div>
         <h2 style="margin-left: 10px;margin-bottom: 0px;" >Rcommended reviews</h2>
         <hr>
+        <div class="contents">
         <h3 style="text-align: center;">{{ status }}</h3>
         <div class ="cards_display">
             {% for card in cards %}
@@ -39,6 +40,18 @@
                 </div>
             {% endfor %}
             <h4 style="color: green;">{{ perfect }}</h4>
+            <h4>please rate this deck</h4>
+            <form action="/ratingapi/update" method="post">
+                <input type="hidden" value = {{deck_id}} name = "deck_id">
+                <input style = "width: 20px;height: 20px;" type="radio" name="option" value="0"><label>Easy</label>
+                <input style = "width: 20px;height: 20px;" type="radio" name="option" value="1"><label>Medium</label>
+                <input style = "width: 20px;height: 20px;" type="radio" name="option" value="2"><label>Hard</label>
+                <br>
+                <input class="entry"type="submit" value="Submit">
+            </form>
+            <br>
+            <button class = "entry"onclick="window.location.href='/dashboard'">Skip</button>
+        </div>
         </div>
         </div>
         

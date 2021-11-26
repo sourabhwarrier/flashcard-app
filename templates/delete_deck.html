@@ -5,7 +5,7 @@
             Deck
         </title>
         <meta charset="utf-8"/>
-        <link rel="stylesheet" href="../static/cards.css">
+        <link rel="stylesheet" href="../static/delete_decks.css">
     </head>
     <body>
         <header style="margin: 0;">
@@ -23,21 +23,22 @@
         <h2 style="margin-left: 10px;margin-bottom: 0px;" >Delete decks</h2>
         <hr>
         </div>
+        <div class="contents">
         <div class ="cards_display">
             <form action="/deckapi/delete" method="post">
-            <input type="submit" name="submit" value="Delete">
+            <input class="entry" type="submit" name="submit" value="Delete">
             {% for deck in decks %}
-                <div class="card">
+                <div style= "margin-top: 10px;"class="card">
                     <div class="container">
                     <h4 style="font-size: 25px;max-width: 150px;margin-left: auto;margin-right: auto;"><b>{{ deck[1] }}</b></h4>
                     <p>{{ deck[2] }}</p>
                     </div>
-                    <input type="checkbox" name="to_delete" value={{ deck[0] }} />
+                    <input style="width: 20px; height: 20px;" type="checkbox" name="to_delete" value={{ deck[0] }} />
                 </div>
             {% endfor %}
             </form>
         </div>
-        
+    </div>
         
     </body>
 </html>

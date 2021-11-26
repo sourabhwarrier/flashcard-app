@@ -89,3 +89,19 @@ body{
     padding: 5;
     background-color: #5596e6;
 }
+
+.contents{
+    margin-top: 0px;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    -ms-transform: translate(-50%, -0%);
+    transform: translate(-50%, -0%);
+    text-align: center;
+}
+
+.entry{
+    margin-top: 10px;
+    width: 150px;
+    padding: 10px 30px 10px 30px;
+}

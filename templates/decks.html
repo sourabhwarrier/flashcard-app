@@ -25,7 +25,7 @@
         <button class="general_button" onclick="window.location.href='/deck/delete'">Delete</button>
         <button class="general_button">Import</button>
         <hr>
-        <div class ="decks_display">
+        <div style="margin-top: 10px;" class ="decks_display">
         {% for deck in decks %}
             <div class="deck" onclick="window.location.href='/deck/{{ deck[0] }}'">
                 <div class="container">

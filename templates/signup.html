@@ -5,18 +5,26 @@
             Sign Up
         </title>
         <meta charset="utf-8"/>
+        <link rel="stylesheet" href="../static/signup.css">
     </head>
     <body>
+        <div class="signup_block">
         <h1>Sign Up</h1>
         <form action="/signup" method="post">
-            <label for="">{{ message }}</label><br>
-            <label for="username">username</label>
-            <input type="text" name = "username" required>
+            <label for="" style="color: red;">{{ message }}</label><br>
+            <div class="line">
+            <label class ="gn_label1"for="username">Username</label>
+            <input class="gn_input"type="text" name = "username" required>
+        </div>
             <br>
-            <label for="password">password</label>
-            <input type="password" name = "password" required minlength="8">
-            <input type="submit" value="Sign Up">
+            <div class="line">
+            <label class="gn_label2"for="password">Password</label>
+            <input class = "gh_input"type="password" name = "password" required minlength="8">
+        </div>
+            <br>
+            <input class = "entry"type="submit" value="Sign Up">
         </form>
-        <button onclick ="window.location.href='signin'" type="submit">Sign In</button>
+        <button class = "entry"onclick ="window.location.href='signin'" type="submit">Sign In</button>
+    </div>
     </body>
 </html>

@@ -61,8 +61,8 @@ body{
 
 .deck {
     /* Add shadows to create the "card" effect */
-    height: 200px;
-    width: 400px;
+    height: 810px;
+    width: 600px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
   }
@@ -80,4 +80,14 @@ body{
 
 .decks_display{
     padding: 10px;
+}
+
+.decks_display{
+    margin-top: 0px;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    -ms-transform: translate(-50%, -0%);
+    transform: translate(-50%, -0%);
+    text-align: center;
 }

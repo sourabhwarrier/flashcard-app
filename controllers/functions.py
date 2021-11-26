@@ -1,11 +1,12 @@
 from operator import add
 from db.database import db
-from models.models import Misc, Performance, User,Card,Deck,Result
+from models.models import Misc, Performance, Rating, User,Card,Deck,Result
 from sqlalchemy import *
 import hashlib
 import random
-
-
+import matplotlib.pyplot as plt
+import base64
+from io import BytesIO
 
 
 def sha3512(password):
@@ -77,6 +78,7 @@ def update_deck(deck_id,name,description):
     db.session.commit()
 
 def delete_deck(deck_id):
+    delete_rating(deck_id)
     delete_misc_by_deck(deck_id)
     delete_performance_by_deck(deck_id)
     db.session.query(Deck).filter(Deck.deck_id==deck_id).delete()
@@ -109,6 +111,7 @@ def option_gen(cards):
                 options.append(W[idx].capitalize())
         random.shuffle(options)
         data.append((card,options))
+        print("options generated : ",options)
     return data
 
 def get_result(user_id):
@@ -183,3 +186,37 @@ def delete_misc_by_deck(deck_id):
 def get_misc(user_id,deck_id):
     time = [x.last_time for x in db.session.query(Misc).filter(Misc.deck_id==deck_id,Misc.user_id==user_id).all()]
     return time
+
+def get_score_breakdown(user_id,deck_id):
+
+    card_ids = [x[0] for x in get_cards(deck_id)]
+    scores = []
+    for x in card_ids:
+        s =sum([int(y.score) for y in db.session.query(Performance).filter(Performance.user_id==user_id,Performance.card_id==x).all()])
+        scores.append(s)
+    return scores
+
+def update_rating(deck_id,rating):
+    print("Reached here inside rating")
+    new_rating = Rating(deck_id=deck_id,rating=rating)
+    db.session.add(new_rating)
+    db.session.commit()
+    db.session.close()
+    
+def delete_rating(deck_id):
+    db.session.query(Rating).filter(Rating.deck_id==deck_id).delete()
+    db.session.commit()
+    db.session.close()
+
+def get_rating(deck_id):
+    L = db.session.query(Rating).filter(Rating.deck_id==deck_id).all()
+    if L != []:
+        r = sum([int(x.rating) for x in L])/len(L)
+        if r <0.5:
+            return "Easy"
+        elif r<1.5:
+            return "Medium"
+        else:
+            return "Hard"
+    else:
+        return "No rating"
