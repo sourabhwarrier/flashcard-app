@@ -2,16 +2,13 @@
 from flask import Flask, session,render_template,request,redirect,g,url_for
 from flask_restful import Api
 import os
-from sqlalchemy import databases
 from api.api import CardAddAPI, CardDelAPI,DeckAddAPI,DeckUpdateAPI,DeckDelAPI, QuizApi, RatingApi
 from application.configuration import appConfig
-from controllers.functions import add_user, get_decks,get_card, get_performance, get_rating, get_score_breakdown, get_user_id, option_gen, reset_result, user_exists,authenticate_user,get_cards,get_deck,get_result
+from controllers.functions import add_user,gen_hist_img, get_decks,get_card, get_performance, get_rating, get_score_breakdown, get_user_id, option_gen, reset_result, user_exists,authenticate_user,get_cards,get_deck,get_result
 from db.database import db
 import matplotlib
 matplotlib.use('Agg')
-from matplotlib import pyplot as plt
-from io import BytesIO
-import base64
+
 
 
 
@@ -26,18 +23,7 @@ def create_app():
     
 app,api = create_app()
 
-def gen_hist_img(L):
-    L = [L[0]]+L
-    plt.plot(L)
-    plt.ylabel("Points")
-    plt.xlabel("Question")
-    plt.xticks([i for i in range(len(L))])
-    #print("length of x ; ",len(L),L)
-    img = BytesIO()
-    plt.savefig(img, format='png', bbox_inches='tight')
-    plt.clf()
-    img.seek(0)
-    return base64.b64encode(img.getvalue()).decode()
+
 
 @app.route('/')
 def login():
@@ -71,7 +57,9 @@ def signin():
         return render_template("error.html")
     return render_template("signin.html",message=status)
 
-
+@app.route('/cheemserror')
+def cheemserror():
+    return render_template('error.html')
 
 @app.route('/signup',methods = ['GET','POST'])
 def signup():
@@ -132,13 +120,17 @@ def results():
         try:
             deck_id=request.args.get('deck_id')
             points,wrong_cards = get_result(get_user_id(session["user"]))
-            if int(points) <= 100:
+            if int(points) >= 100:
                 message = "Excellent"
-            elif int(points) <=70:
+                color = "#008000"
+            elif int(points) >=70:
                 message = "Good"
-            elif int(points) <= 40:
+                color = "#f8bb00"
+            elif int(points) >= 40:
+                color = "#808080"
                 message = "Passed"
             else:
+                color = '#ff0000'
                 message = "Try again"
         
             if points !=None and wrong_cards != None:
@@ -147,7 +139,7 @@ def results():
                 print(cards)
                 if cards != []:
                     perfect = ""
-                return render_template("results.html",points=points,cards=cards,perfect = perfect,deck_id = deck_id,message = message)
+                return render_template("results.html",points=points,cards=cards,perfect = perfect,deck_id = deck_id,message = message, color = color)
         except:
             return render_template("error.html")   
     return redirect(url_for('signin'))
@@ -287,4 +279,4 @@ def before_request():
         g.user = session['user']
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')

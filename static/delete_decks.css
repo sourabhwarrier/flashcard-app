@@ -33,6 +33,12 @@
 }
 
 .navbar{
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
+    transition: 0.3s;
+    position: fixed;
+    top: 0;
+    z-index:1000;
+
     vertical-align: middle;
     overflow: hidden;
     width: 100%;
@@ -49,16 +55,35 @@
 }
 
 body{
-    background-color: #f0f3f6;
+    background-color:#ffffff;
     margin: 0px;
 }
 
 .logout_button{
+    margin-left: -15px;
+    margin-top: -15px;
+    height: 54px;
+    width: 100px;
     color: #f0f3f6;
     background-color: firebrick;
 }
 
+.logout_button:hover{
+    margin-left: -15px;
+    margin-top: -15px;
+    height: 54px;
+    width: 100px;
+    background-color: #f0f3f6;
+    color: firebrick;
+    transition: 0.3s;
+}
+
+
 .card {
+    margin-top: 20px;
+    border-style:ridge;
+    border-width: 3px;
+    border-color: #5596e6;
     /* Add shadows to create the "card" effect */
     width: 400px;
     height: 200px;
@@ -105,4 +130,8 @@ body{
   
     width: 100px;
     padding: 10px 30px 10px 30px;
+}
+
+.dashboard_content{
+    padding-top: 50px;
 }

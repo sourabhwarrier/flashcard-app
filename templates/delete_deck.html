@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>
-            Deck
+            Delete Deck
         </title>
         <meta charset="utf-8"/>
         <link rel="stylesheet" href="../static/delete_decks.css">
@@ -33,7 +33,7 @@
                     <h4 style="font-size: 25px;max-width: 150px;margin-left: auto;margin-right: auto;"><b>{{ deck[1] }}</b></h4>
                     <p>{{ deck[2] }}</p>
                     </div>
-                    <input style="width: 20px; height: 20px;" type="checkbox" name="to_delete" value={{ deck[0] }} />
+                    <input style="width: 20px; height: 20px; float: left;" type="checkbox" name="to_delete" value={{ deck[0] }} />
                 </div>
             {% endfor %}
             </form>

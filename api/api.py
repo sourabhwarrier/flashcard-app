@@ -1,12 +1,11 @@
 
-from flask.templating import render_template
+
 from flask_restful import Resource
 from flask import request,url_for
-from sqlalchemy.sql.expression import update
 from werkzeug.utils import redirect
 from datetime import datetime
 
-from controllers.functions import add_card, add_misc,delete_card,add_deck, delete_deck, get_card, get_cards, get_misc, get_result, reset_result,update_deck, update_misc, update_performance, update_result,update_rating
+from controllers.functions import add_card, add_misc,delete_card,add_deck, delete_deck, get_card, get_cards, get_misc,update_deck, update_misc, update_performance, update_result,update_rating
 
 class CardAddAPI(Resource):
     def get(self):

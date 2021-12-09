@@ -1,4 +1,3 @@
-from operator import add
 from db.database import db
 from models.models import Misc, Performance, Rating, User,Card,Deck,Result
 from sqlalchemy import *
@@ -9,6 +8,7 @@ import base64
 from io import BytesIO
 
 
+# USER FUNCTIONS BEGIN
 def sha3512(password):
     m = hashlib.sha3_512()
     m.update(password.encode("utf-8"))
@@ -45,8 +45,10 @@ def get_user_id(username):
     user_id = db.session.query(User.user_id).filter(User.username==username).first()[0]
     db.session.close()
     return user_id
+# USER FUNCTIONS END
 
 
+# CARD FUNCTIONS BEGIN
 def add_card(question,answer,deck_id):
     new_card = Card(question = question,answer = answer,deck_id=deck_id)
     db.session.add(new_card)
@@ -67,6 +69,15 @@ def get_cards(deck_id):
     cards = [(card.card_id,card.question,card.answer) for card in db.session.query(Card).filter(Card.deck_id==deck_id).all()]
     print(cards)
     return cards
+# CARD FUNCTIONS END
+
+
+
+# DECK FUNCTIONS BEGIN
+def get_decks():
+    decks = [(deck.deck_id,deck.name,deck.description) for deck in db.session.query(Deck).all()]
+    print(decks[0])
+    return decks
 
 def add_deck(name,description):
     new_deck = Deck(name = name,description=description)
@@ -85,35 +96,14 @@ def delete_deck(deck_id):
     db.session.commit()
     db.session.close()
 
-
-def get_decks():
-    decks = [(deck.deck_id,deck.name,deck.description) for deck in db.session.query(Deck).all()]
-    print(decks[0])
-    return decks
-
-
-
 def get_deck(deck_id):
     deck = [(deck.deck_id,deck.name,deck.description) for deck in db.session.query(Deck).filter(Deck.deck_id==deck_id).all()][0]
     return deck
+# DECK FUNCTIONS END
 
-def option_gen(cards):
-    data = []
-    with open('data/wordlist.txt') as f:
-        W = f.readlines()
-        n = len(W)
-    for card in cards:
-        options = [card[2]]
-        while len(options) < 4:
-            idx = random.randint(0,n-1)
-            print(idx)
-            if W[idx] not in options and W[idx]:
-                options.append(W[idx].capitalize())
-        random.shuffle(options)
-        data.append((card,options))
-        print("options generated : ",options)
-    return data
 
+
+# RESULT FUNCTIONS BEGIN
 def get_result(user_id):
     try:
         score = sum([int(x.score) for x in db.session.query(Result).filter(Result.user_id==user_id,Result.score==1).all()])
@@ -125,11 +115,7 @@ def get_result(user_id):
         return points,wrong_cards
     except:
         return None,None
-def update_performance(user_id,card_id,deck_id,score):
-    new_performance = Performance(user_id=user_id,card_id=card_id,deck_id=deck_id,score=score)
-    db.session.add(new_performance)
-    db.session.commit()
-    db.session.close()
+
 
 def update_result(user_id,card_id,answer,submission,score):
     new_result = Result(user_id=user_id,card_id=card_id,answer=answer,submission=submission,score=score)
@@ -141,7 +127,10 @@ def reset_result():
     db.session.query(Result).delete()
     db.session.commit()
     db.session.close()
+# RESULT FUNCTIONS END
 
+
+# PERFORMANCE FUNCTIONS BEGIN
 def get_performance(user_id):
     deck_ids = list(set([(x.deck_id) for x in db.session.query(Performance).filter(Performance.user_id==user_id).all()]))
     print(deck_ids)
@@ -160,6 +149,11 @@ def get_performance(user_id):
         times.append(get_misc(user_id,deck[0]))
     #return [],[],[],[]
     return decks_studied,averages,points,times
+def update_performance(user_id,card_id,deck_id,score):
+    new_performance = Performance(user_id=user_id,card_id=card_id,deck_id=deck_id,score=score)
+    db.session.add(new_performance)
+    db.session.commit()
+    db.session.close()
 def delete_performance_by_card(card_id):
     db.session.query(Performance).filter(Performance.card_id==card_id).delete()
     db.session.commit()
@@ -168,7 +162,9 @@ def delete_performance_by_deck(deck_id):
     db.session.query(Performance).filter(Performance.deck_id==deck_id).delete()
     db.session.commit()
     db.session.close()
+# PERFORMANCE FUNCTIONS END
 
+# MISC FUNCTIONS BEGIN
 def add_misc(user_id,deck_id,time):
     new_misc = Misc(user_id=user_id,deck_id=deck_id,last_time=time)
     db.session.add(new_misc)
@@ -186,16 +182,14 @@ def delete_misc_by_deck(deck_id):
 def get_misc(user_id,deck_id):
     time = [x.last_time for x in db.session.query(Misc).filter(Misc.deck_id==deck_id,Misc.user_id==user_id).all()]
     return time
+# MISC FUNCTIONS END
 
-def get_score_breakdown(user_id,deck_id):
 
-    card_ids = [x[0] for x in get_cards(deck_id)]
-    scores = []
-    for x in card_ids:
-        s =sum([int(y.score) for y in db.session.query(Performance).filter(Performance.user_id==user_id,Performance.card_id==x).all()])
-        scores.append(s)
-    return scores
 
+
+
+
+# RATING FUNCTIONS BEGIN
 def update_rating(deck_id,rating):
     print("Reached here inside rating")
     new_rating = Rating(deck_id=deck_id,rating=rating)
@@ -220,3 +214,45 @@ def get_rating(deck_id):
             return "Hard"
     else:
         return "No rating"
+# RATING FUNCTIONS END
+
+# OTHER FUNCTIONS BEGIN
+def gen_hist_img(L):
+    L = [L[0]]+L
+    plt.plot(L)
+    plt.ylabel("Points")
+    plt.xlabel("Question")
+    plt.xticks([i for i in range(len(L))])
+    #print("length of x ; ",len(L),L)
+    img = BytesIO()
+    plt.savefig(img, format='png', bbox_inches='tight')
+    plt.clf()
+    img.seek(0)
+    return base64.b64encode(img.getvalue()).decode()
+
+def get_score_breakdown(user_id,deck_id):
+
+    card_ids = [x[0] for x in get_cards(deck_id)]
+    scores = []
+    for x in card_ids:
+        s =sum([int(y.score) for y in db.session.query(Performance).filter(Performance.user_id==user_id,Performance.card_id==x).all()])
+        scores.append(s)
+    return scores
+
+def option_gen(cards):
+    data = []
+    with open('data/wordlist.txt') as f:
+        W = f.readlines()
+        n = len(W)
+    for card in cards:
+        options = [card[2]]
+        while len(options) < 4:
+            idx = random.randint(0,n-1)
+            print(idx)
+            if W[idx] not in options and W[idx]:
+                options.append(W[idx].capitalize())
+        random.shuffle(options)
+        data.append((card,options))
+        print("options generated : ",options)
+    return data
+# OTHER FUCNTIONS END

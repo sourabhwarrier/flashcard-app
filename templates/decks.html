@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>
-            Dashboard
+            Decks
         </title>
         <meta charset="utf-8"/>
         <link rel="stylesheet" href="../static/decks.css">
@@ -23,7 +23,6 @@
         <h2 style="margin-left: 10px;margin-bottom: 0px;" >Decks</h2>
         <button class="general_button" onclick="window.location.href='/deck/add'">Add deck</button>
         <button class="general_button" onclick="window.location.href='/deck/delete'">Delete</button>
-        <button class="general_button">Import</button>
         <hr>
         <div style="margin-top: 10px;" class ="decks_display">
         {% for deck in decks %}

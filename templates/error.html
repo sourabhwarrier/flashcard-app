@@ -6,14 +6,19 @@
         </title>
         <link rel="stylesheet" href="../static/error.css">
         <meta charset="UTF-8">
+        <script>
+            function goBack() {
+              window.history.back();
+            }
+            </script>
     </head>
     <body>
         <div class="centered_content">
             <img style="width: 300px; height: 300px;" src="../static/cheems.png" alt="crying cheems error page">
             <h1>An Error Occured :(</h1>
-            <h2>The you requested could not be rendered</h2><br>
-            <button class="entry">Go Back</button>
-            <button class="entry">Go Home</button>
+            <h2>The content you requested could not be found</h2><br>
+            <button class="entry" onclick="goBack()">Go Back</button>
+            <button class="entry" onclick="window.location.href='/dashboard'">Go Home</button>
         </div>
     </body>
 </html>
